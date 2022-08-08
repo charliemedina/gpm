@@ -22,7 +22,9 @@ namespace Domain.ShapeAggregate
 
         public int Intersect(Shape shape2)
         {
-            throw new NotImplementedException();
+            var random = new Random();
+
+            return random.Next(1, 100);
         }
     }
 }
