@@ -1,5 +1,4 @@
 using Domain.ShapeAggregate;
-using MediatR;
 
 namespace Application.Commands
 {
@@ -20,9 +19,9 @@ namespace Application.Commands
                 shape.AddVertex(vertex.X, vertex.Y, vertex.Z);
             }
 
-            var newShape = await _shapeRepository.Add(shape);
+            var result = await _shapeRepository.Add(shape);
 
-            return new CommandResult(newShape != null, newShape.ShapeId, "Error while trying to create the shape");
+            return new CommandResult(result != null, (result?.ShapeId) ?? 0, "Error while trying to create the shape");
         }
     }
 }

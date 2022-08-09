@@ -1,6 +1,4 @@
-using System.Runtime.Serialization;
 using Application.DTOs;
-using MediatR;
 
 namespace Application.Commands
 {

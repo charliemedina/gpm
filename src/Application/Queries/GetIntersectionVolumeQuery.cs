@@ -1,6 +1,3 @@
-using System.Runtime.Serialization;
-using MediatR;
-
 namespace Application.Queries
 {
     [DataContract]

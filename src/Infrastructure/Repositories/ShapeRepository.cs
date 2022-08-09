@@ -33,7 +33,7 @@ namespace Infrastructure.Repositories
         {
             var shapeToUpdate = await _context.Shapes.FindAsync(shape.ShapeId);
 
-            if (shapeToUpdate is not null)
+            if (shapeToUpdate != null)
             {
                 foreach (var vertex in shape.Vertices)
                 {

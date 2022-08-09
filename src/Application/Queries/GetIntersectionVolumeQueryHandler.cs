@@ -1,5 +1,4 @@
 using Domain.ShapeAggregate;
-using MediatR;
 
 namespace Application.Queries
 {

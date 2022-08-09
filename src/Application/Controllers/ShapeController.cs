@@ -1,7 +1,6 @@
 using Application.Commands;
 using Application.DTOs;
 using Application.Queries;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers;
@@ -20,24 +19,28 @@ public class ShapeController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<int>> CreateShapeAsync([FromBody] Shape shape)
+    public async Task<ActionResult> CreateShapeAsync([FromBody] Shape shape)
     {
-        var commandResult = await _mediator.Send(new CreateShapeCommand(shape.Vertices));
-        if (!commandResult.IsSuccess)
+        var getType = StatusCode(StatusCodes.Status500InternalServerError).GetType();
+        try
         {
-            _logger.LogError(commandResult.Error);
+            var commandResult = await _mediator.Send(new CreateShapeCommand(shape.Vertices));
 
-            return StatusCodes.Status500InternalServerError;
+            return Ok(commandResult.Identity);
         }
+        catch (NullReferenceException ex)
+        {
+            _logger.LogError(ex, "Error while trying to create the shape");
 
-        return Ok(commandResult.Identity);
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<int>> GetIntersectionVolume([FromQuery] int id1, [FromQuery] int id2)
+    public async Task<ActionResult> GetIntersectionVolume([FromQuery] int id1, [FromQuery] int id2)
     {
         try
         {
@@ -49,7 +52,7 @@ public class ShapeController : ControllerBase
         {
             _logger.LogError(e, "Error while trying to calculate the intersection");
 
-            return StatusCodes.Status500InternalServerError;
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }
