@@ -6,9 +6,9 @@ namespace Infrastructure.Repositories
 {
     public class ShapeRepository : IShapeRepository
     {
-        private readonly DataContext _context;
+        private readonly ShapesContext _context;
 
-        public ShapeRepository(DataContext context)
+        public ShapeRepository(ShapesContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

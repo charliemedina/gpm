@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Application.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("shapes")]
 public class ShapeController : ControllerBase
 {
     private readonly ILogger<ShapeController> _logger;
@@ -23,7 +23,6 @@ public class ShapeController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> CreateShapeAsync([FromBody] Shape shape)
     {
-        var getType = StatusCode(StatusCodes.Status500InternalServerError).GetType();
         try
         {
             var commandResult = await _mediator.Send(new CreateShapeCommand(shape.Vertices));
@@ -38,13 +37,14 @@ public class ShapeController : ControllerBase
         }
     }
 
+    [Route("{shapeId}/intersections")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> GetIntersectionVolume([FromQuery] int id1, [FromQuery] int id2)
+    public async Task<ActionResult> GetIntersectionVolume([FromRoute] int shapeId, [FromQuery] int id)
     {
         try
         {
-            var intersectionVolume = await _mediator.Send(new GetIntersectionVolumeQuery(id1, id2));
+            var intersectionVolume = await _mediator.Send(new GetIntersectionVolumeQuery(shapeId, id));
 
             return Ok(intersectionVolume);
         }

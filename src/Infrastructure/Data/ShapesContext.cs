@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class DataContext : DbContext
+    public class ShapesContext : DbContext
     {
         public DbSet<Shape> Shapes { get; set; }
 
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        public ShapesContext(DbContextOptions<ShapesContext> options) : base(options) { }
     }
 }
